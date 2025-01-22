@@ -7,36 +7,36 @@ function TodoList() {
   const [newTask, setNewTask] = useState("");
 
   function saveTasks() {
-    if ([...tasks].length == 0){
+    if ([...tasks].length == 0) {
       return;
     }
     localStorage.setItem("tasks", JSON.stringify([...tasks]));
   }
 
-  function saveEmptyTasks() { 
+  function saveEmptyTasks() {
     localStorage.setItem("tasks", JSON.stringify([]));
   }
 
   function loadTasks() {
-    console.log("Loading tasks...")
+    console.log("Loading tasks...");
     const tasksJSON = localStorage.getItem("tasks");
     if (!tasksJSON) {
-      console.error("Local storage value is invalid.")
+      console.error("Local storage value is invalid.");
       return;
     }
     let parsedTasks;
     try {
       parsedTasks = JSON.parse(tasksJSON);
     } catch (ex) {
-      console.error("Couldn't parse JSON for tasks.")
+      console.error("Couldn't parse JSON for tasks.");
       return;
     }
     if (parsedTasks && typeof parsedTasks === "object") {
       setTasks(parsedTasks);
     } else {
-      console.error("Parsed value is not an object.")
+      console.error("Parsed value is not an object.");
     }
-    console.log("Successfuly completed loading of tasks.")
+    console.log("Successfuly completed loading of tasks.");
   }
 
   useEffect(() => {
@@ -81,7 +81,7 @@ function TodoList() {
   };
 
   const deleteTask = (index) => {
-    if([...tasks].length == 1) {
+    if ([...tasks].length == 1) {
       setTasks([]);
       saveEmptyTasks();
       return;
@@ -105,6 +105,11 @@ function TodoList() {
           type="text"
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              addTask();
+            }
+          }}
           placeholder="Add a new task"
         />
         <button onClick={addTask}>Add</button>
